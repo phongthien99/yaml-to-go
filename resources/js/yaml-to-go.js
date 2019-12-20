@@ -2,12 +2,12 @@
 	JSON-to-Go
 	by Matt Holt
 
-	https://github.com/mholt/json-to-go
+	https://github.com/mholt/yaml-to-go
 
 	A simple utility to translate JSON into a Go type definition.
 */
 
-function jsonToGo(json, typename, flatten = true)
+function yamlToGo(yaml, typename, flatten = true)
 {
 	let data;
 	let scope;
@@ -22,7 +22,8 @@ function jsonToGo(json, typename, flatten = true)
 
 	try
 	{
-		data = JSON.parse(json.replace(/\.0/g, ".1")); // hack that forces floats to stay as floats
+		data = jsyaml.load(yaml.replace(/:(\s*\d*)\.0/g, ":$1.1")); // hack that forces floats to stay as floats
+    console.log(data)
 		scope = data;
 	}
 	catch (e)
@@ -194,7 +195,7 @@ function jsonToGo(json, typename, flatten = true)
 				appender(typename+" ");
 				parent = typename
 				parseScope(scope[keys[i]], depth);
-				appender(' `json:"'+keyname);
+				appender(' `yaml:"'+keyname);
 				if (omitempty && omitempty[keys[i]] === true)
 				{
 					appender(',omitempty');
@@ -217,7 +218,7 @@ function jsonToGo(json, typename, flatten = true)
 				append(typename+" ");
 				parent = typename
 				parseScope(scope[keys[i]], depth);
-				append(' `json:"'+keyname);
+				append(' `yaml:"'+keyname);
 				if (omitempty && omitempty[keys[i]] === true)
 				{
 					append(',omitempty');
@@ -398,11 +399,22 @@ function jsonToGo(json, typename, flatten = true)
 
 if (typeof module != 'undefined') {
     if (!module.parent) {
-        process.stdin.on('data', function(buf) {
-            const json = buf.toString('utf8')
-            console.log(jsonToGo(json).go)
-        })
+        if (process.argv.length > 2 && process.argv[2] === '-big') {
+            bufs = []
+            process.stdin.on('data', function(buf) {
+                bufs.push(buf)
+            })
+            process.stdin.on('end', function() {
+                const yaml = Buffer.concat(bufs).toString('utf8')
+                console.log(yamlToGo(yaml).go)
+            })
+        } else {
+            process.stdin.on('data', function(buf) {
+                const yaml = buf.toString('utf8')
+                console.log(yamlToGo(yaml).go)
+            })
+        }
     } else {
-        module.exports = jsonToGo
+        module.exports = yamlToGo
     }
 }

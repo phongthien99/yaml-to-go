@@ -13,7 +13,7 @@ function initAnalytics()
 
 $(function()
 {
-	const emptyInputMsg = "Paste JSON here";
+	const emptyInputMsg = "Paste YAML here";
 	const emptyOutputMsg = "Go will appear here";
 	const formattedEmptyInputMsg = '<span style="color: #777;">'+emptyInputMsg+'</span>';
 	const formattedEmptyOutputMsg = '<span style="color: #777;">'+emptyOutputMsg+'</span>';
@@ -27,13 +27,13 @@ $(function()
 			return;
 		}
 
-		let output = jsonToGo(input, "", !$('#inline').is(':checked'), false);
+		let output = yamlToGo(input, "", !$('#inline').is(':checked'), false);
 
 		if (output.error)
 		{
 			$('#output').html('<span class="clr-red">'+output.error+'</span>');
 			console.log("ERROR:", output, output.error);
-			var parsedError = output.error.match(/Unexpected token .+ in JSON at position (\d+)/);
+			var parsedError = output.error.match(/Unexpected token .+ in YAML at position (\d+)/);
 			if (parsedError) {
 				try {
 					var faultyIndex = parsedError.length == 2 && parsedError[1] && parseInt(parsedError[1]);
