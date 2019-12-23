@@ -7,7 +7,7 @@ $(function()
 
 	function doConversion()
 	{
-		var input = $('#input').text().trim();
+		var input = $('#input').val().trim();
 		if (!input || input == emptyInputMsg)
 		{
 			$('#output').html(formattedEmptyOutputMsg);
@@ -41,23 +41,23 @@ $(function()
 	// Hides placeholder text
 	$('#input').on('focus', function()
 	{
-		var val = $(this).text();
+		var val = $(this).val();
 		if (!val)
 		{
-			$(this).html(formattedEmptyInputMsg);
+			$(this).val(emptyInputMsg);
 			$('#output').html(formattedEmptyOutputMsg);
 		}
 		else if (val == emptyInputMsg)
-			$(this).html("");
+			$(this).val("");
 	});
 
 	// Shows placeholder text
 	$('#input').on('blur', function()
 	{
-		var val = $(this).text();
+		var val = $(this).val();
 		if (!val)
 		{
-			$(this).html(formattedEmptyInputMsg);
+			$(this).val(emptyInputMsg);
 			$('#output').html(formattedEmptyOutputMsg);
 		}
 	}).blur();
@@ -106,11 +106,11 @@ $(function()
 	// Fill in sample JSON if the user wants to see an example
 	$('#sample1').click(function()
 	{
-		$('#input').text(sampleYaml1).keyup();
+		$('#input').val(sampleYaml1).keyup();
 	});
 	$('#sample2').click(function()
 	{
-		$('#input').text(sampleYaml2).keyup();
+		$('#input').val(sampleYaml2).keyup();
 	});
 
 	var dark = false;
