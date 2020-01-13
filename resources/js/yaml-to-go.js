@@ -1,10 +1,10 @@
 /*
-	JSON-to-Go
-	by Matt Holt
+	YAML-to-Go
+	by Zhwt
 
-	https://github.com/mholt/yaml-to-go
+	https://github.com/Zhwt/yaml-to-go
 
-	A simple utility to translate JSON into a Go type definition.
+	A simple utility parses and translates YAML into a Go struct definition.
 */
 
 function yamlToGo(yaml, typename, flatten = true)
