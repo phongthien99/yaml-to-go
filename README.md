@@ -6,7 +6,7 @@ Parse and translates YAML into a Go struct definition. [Check it out!](http://zh
 
 This project is aimed to provide an online service. In case you need the js library only, [click here to download](https://raw.githubusercontent.com/Zhwt/yaml-to-go/gh-pages/resources/js/yaml-to-go.js).
 
-In fact , there is already a yaml-to-go tool by mengzhuo, however [that project](https://github.com/mengzhuo/yaml-to-go) seems abandoned and no longer maintained, so I started my own version.
+In fact, there is already a yaml-to-go tool by mengzhuo, however [that project](https://github.com/mengzhuo/yaml-to-go) seems abandoned and no longer maintained, so I started my own version.
 
 ### Things to note:
 
