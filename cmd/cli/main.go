@@ -47,7 +47,9 @@ func main() {
 
 	// Create yaml2go object and invoke Convert()
 	y2g := yaml2go.New()
-	result, err := y2g.Convert("Yaml2Go", []byte(data))
+	result, err := y2g.Convert("EnvironmentVariable", []byte(data))
+
+	result = fmt.Sprintf(`package types %s`, result)
 	if err != nil {
 		log.Fatal("Invalid YAML")
 	}

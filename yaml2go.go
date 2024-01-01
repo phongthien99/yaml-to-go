@@ -3,9 +3,10 @@ package yaml2go
 import (
 	"fmt"
 	"go/format"
-	"gopkg.in/yaml.v2"
 	"reflect"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
 // New creates Yaml2Go object
@@ -71,11 +72,11 @@ func (yg *Yaml2Go) Convert(structName string, data []byte) (string, error) {
 		return "", err
 	}
 
-	yg.NewStruct("Yaml2Go", "")
+	yg.NewStruct(structName, "")
 	for k, v := range obj {
 		yg.Structify(structName, k, v, false)
 	}
-	yg.AppendResult("Yaml2Go", "}\n")
+	yg.AppendResult(structName, "}\n")
 
 	var result string
 	for _, value := range yg.StructMap {
@@ -96,7 +97,7 @@ func (yg *Yaml2Go) Convert(structName string, data []byte) (string, error) {
 func (yg *Yaml2Go) Structify(structName, k string, v interface{}, arrayElem bool) {
 
 	if reflect.TypeOf(v) == nil || len(k) == 0 {
-		yg.AppendResult(structName, fmt.Sprintf("%s interface{} `yaml:\"%s\"`\n", goKeyFormat(k), k))
+		yg.AppendResult(structName, fmt.Sprintf("%s interface{} `mapstructure:\"%s\"`\n", goKeyFormat(k), k))
 		return
 	}
 
@@ -111,7 +112,7 @@ func (yg *Yaml2Go) Structify(structName, k string, v interface{}, arrayElem bool
 			if !arrayElem {
 				// Create new structure
 				newKey = yg.NewStruct(key, structName)
-				yg.AppendResult(structName, fmt.Sprintf("%s %s `yaml:\"%s\"`\n", key, newKey, k))
+				yg.AppendResult(structName, fmt.Sprintf("%s %s `mapstructure:\"%s\"`\n", key, newKey, k))
 			}
 			// If array of yaml objects
 			for k1, v1 := range val {
@@ -133,14 +134,14 @@ func (yg *Yaml2Go) Structify(structName, k string, v interface{}, arrayElem bool
 		switch val[0].(type) {
 
 		case string, int, bool, float64:
-			yg.AppendResult(structName, fmt.Sprintf("%s []%s `yaml:\"%s\"`\n", goKeyFormat(k), reflect.TypeOf(val[0]), k))
+			yg.AppendResult(structName, fmt.Sprintf("%s []%s `mapstructure:\"%s\"`\n", goKeyFormat(k), reflect.TypeOf(val[0]), k))
 
 		// if nested object
 		case map[interface{}]interface{}:
 			key := goKeyFormat(k)
 			// Create new structure
 			newKey := yg.NewStruct(key, structName)
-			yg.AppendResult(structName, fmt.Sprintf("%s []%s `yaml:\"%s\"`\n", key, newKey, k))
+			yg.AppendResult(structName, fmt.Sprintf("%s []%s `mapstructure:\"%s\"`\n", key, newKey, k))
 			for _, v1 := range val {
 				yg.Structify(newKey, key, v1, true)
 			}

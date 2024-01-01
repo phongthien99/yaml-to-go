@@ -1,0 +1,8 @@
+http:
+  port: 4000
+  host: 0.0.0.0
+  base_path: "/manifest/lrm"
+origin:
+  base_path : http://123.30.172.11:1682/manifest
+lrm_api:
+  base_path : http://localhost:6060/api/lrm
