@@ -134,7 +134,11 @@ type Nested2 struct {
         Nested3 Nested3 `yaml:"nested3"`
 }
 ```
+#### docker
 
+```bash
+$  docker run -v $PWD:/src  -t phongthien/yaml-to-go /app -i  /src/cmd/cli/test.yaml -o /src/cmd/cli/test.go
+```
 ## Contributing
 
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"bufio"
+	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -30,24 +31,24 @@ func printHelp(f string) {
 }
 
 func main() {
-	// Read args
-	if len(os.Args) > 1 {
-		printHelp(os.Args[1])
-	}
+	inputFilePath := flag.String("i", "", "File path to read")
 
-	// Read input from the console
-	var data string
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		data += scanner.Text() + "\n"
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal("Error while reading input:", err)
-	}
+	outFilePath := flag.String("o", "", "File path to read")
+	flag.Parse()
 
 	// Create yaml2go object and invoke Convert()
 	y2g := yaml2go.New()
-	result, err := y2g.Convert("EnvironmentVariable", []byte(data))
+	if *inputFilePath == "" {
+		fmt.Println("Please provide a file path using -i  flag")
+		return
+	}
+
+	// Read the contents of the file
+	content, err := ioutil.ReadFile(*inputFilePath)
+	if err != nil {
+		log.Fatalf("Error reading file: %s", err)
+	}
+	result, err := y2g.Convert("EnvironmentVariable", []byte(content))
 
 	result = fmt.Sprintf(`package types %s`, result)
 	if err != nil {
@@ -55,5 +56,9 @@ func main() {
 	}
 
 	fmt.Printf(result)
+	err = ioutil.WriteFile(*outFilePath, []byte(result), 0644)
+	if err != nil {
+		log.Fatalf("Error writing to file: %s", err)
+	}
 	return
 }
