@@ -33,7 +33,7 @@ func printHelp(f string) {
 func main() {
 	inputFilePath := flag.String("i", "", "File path to read")
 
-	outFilePath := flag.String("o", "", "File path to read")
+	outFilePath := flag.String("o", "", "File path to output")
 	flag.Parse()
 
 	// Create yaml2go object and invoke Convert()
